@@ -1,5 +1,5 @@
 from behave import *
-
+from assertpy import assert_that
 from pages.tivix_labs_page import TivixLabsPage
 
 use_step_matcher("parse")
@@ -56,7 +56,6 @@ def step_impl(context):
 
 @then("User will see list of available cars for rent")
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    raise NotImplementedError(u'STEP: Then User will see list of available cars for rent')
+    tivix_page = TivixLabsPage(context.driver)
+    search_resulsts = tivix_page.count_results()
+    assert_that(search_resulsts).is_greater_than(0)

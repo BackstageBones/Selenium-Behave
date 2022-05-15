@@ -11,3 +11,4 @@ class TivixLabsLocators:
     rental_pickup_date: By = (By.ID, 'pickup')
     rental_drop_off_Date: By = (By.ID, 'dropoff')
     rental_search_button: By = (By.XPATH, '//*[@id="search_form"]/button')
+    list_of_cars: By = (By.XPATH, '//tr')
