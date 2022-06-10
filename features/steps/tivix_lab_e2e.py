@@ -5,13 +5,6 @@ from pages.tivix_labs_page import TivixLabsPage
 use_step_matcher("parse")
 
 
-@given("User is at {url_address} web page")
-def step_impl(context, url_address):
-    tivix_page = TivixLabsPage(context.driver)
-    tivix_page.open_page(url_address)
-
-
-
 @step("User waits for Car rental page to be loaded")
 def step_impl(context):
     tivix_page = TivixLabsPage(context.driver)
@@ -38,14 +31,14 @@ def step_impl(context, model):
 
 @step("User sets car pick up date to {pickup_date}")
 def step_impl(context, pickup_date):
-     tivix_page = TivixLabsPage(context.driver)
-     tivix_page.choose_pickup_date(pickup_date)
+    tivix_page = TivixLabsPage(context.driver)
+    tivix_page.choose_pickup_date(pickup_date)
 
 
 @step("User sets car drop off date to {drop_off_date}")
 def step_impl(context, drop_off_date):
-     tivix_page = TivixLabsPage(context.driver)
-     tivix_page.choose_drop_off_date(drop_off_date)
+    tivix_page = TivixLabsPage(context.driver)
+    tivix_page.choose_drop_off_date(drop_off_date)
 
 
 @step("User clicks search button")
