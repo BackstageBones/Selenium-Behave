@@ -18,7 +18,9 @@ class InterCarsPage(BasePage):
         self._actions.click_element(InterCarsLocators.search_button)
 
     def choose_search_by_car(self, make, model, type):
-        self._actions.click_element(InterCarsLocators.search_by_car_button)
+        search_by_car = self._actions.wait_for_element_to_be_displayed(InterCarsLocators.search_by_car_button)
+        self._actions.scroll_to_element(search_by_car)
+        self._actions.click_by_javascript(InterCarsLocators.search_by_car_button)
         self.select_car_make(make)
         self.select_car_model(model)
         self.select_car_type(type)
@@ -44,4 +46,3 @@ class InterCarsPage(BasePage):
 
     def list_results(self):
         return self._actions.find_elements(InterCarsLocators.products_list)
-

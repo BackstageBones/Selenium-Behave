@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as ec
@@ -65,9 +67,12 @@ class SeleniumActions:
             ec.visibility_of_element_located(locator))
 
     def is_element_displayed(self, locator):
-        if self.wait_for_element_to_be_displayed(locator) is not None:
+        try:
+            self.wait_for_element_to_be_displayed(locator)
+        except TimeoutException:
+            return False
+        else:
             return True
-        return False
 
     def send_keys(self, locator, value):
         element = self.find_element(locator)
@@ -86,3 +91,11 @@ class SeleniumActions:
     def set_element_value(self, locator, value):
         element = self.wait_for_element_clickable(locator)
         self._driver.execute_script(f"arguments[0].setAttribute('value', '{value}')", element)
+
+    def click_by_javascript(self, locator):
+        element = self.find_element(locator)
+        self._driver.execute_script('arguments[0].click();', element)
+
+    def scroll_to_element(self, element):
+        action = ActionChains(self._driver)
+        action.move_to_element(element).perform()
