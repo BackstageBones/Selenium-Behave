@@ -1,7 +1,15 @@
 from behave import *
-from pages.modivo_online_shopping_page import ModivoOnlineShoppingPage
 
+from pages.modivo_online_shopping_page import ModivoOnlineShoppingPage
+from utils.modivo_enums import ClothingTypeEnum
 use_step_matcher("parse")
+
+
+@given("User is at modivo online shopping store")
+def step_impl(context):
+    modivo = ModivoOnlineShoppingPage(context.driver)
+    modivo.open_page('https://modivo.pl/')
+    modivo.accept_marketing_approvals()
 
 
 @step("User chooses {type} clothing")
@@ -16,7 +24,7 @@ def step_impl(context, type):
 @step("Users selects {header} type of clothing from the header pane")
 def step_impl(context, header):
     modivo = ModivoOnlineShoppingPage(context.driver)
-    if header == 'New Products':
+    if header == 'New products':
         modivo.choose_new_products_from_heading()
     else:
         raise NotImplementedError('other heading selections not currently handled')
@@ -34,6 +42,7 @@ def step_impl(context, clothing_type, size):
         raise NotImplementedError('Shoes and underwear filters are not currently handled')
     context.size = size.split()[1]
 
+
 @step("User adds a cloth to cart")
 def step_impl(context):
     modivo = ModivoOnlineShoppingPage(context.driver)
@@ -45,3 +54,9 @@ def step_impl(context):
 def step_impl(context):
     modivo = ModivoOnlineShoppingPage(context.driver)
     modivo.go_to_basket_from_cc()
+
+
+@step("User choose {string} type of clothing")
+def step_impl(context, string):
+    modivo = ModivoOnlineShoppingPage(context.driver)
+    modivo.select_clothe_type(ClothingTypeEnum[string])

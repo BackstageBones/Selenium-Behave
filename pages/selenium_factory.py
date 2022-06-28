@@ -14,6 +14,8 @@ def set_chrome_options():
     options = ChromeOptions()
     options.add_argument("start-maximized")
     options.add_argument('--allow-insecure-localhost')
+    options.add_argument('--disable-popup-blocking')
+    options.add_experimental_option("prefs", {"profile.default_content_setting_values.notifications": 1})
     options.headless = False
     return options
 
@@ -53,10 +55,24 @@ class SeleniumActions:
         self._driver = driver
 
     def find_element(self, locator):
-        return self._driver.find_element(*locator)
+        i = 0
+        while i <= SeleniumActions.DEFAULT_TIMEOUT:
+            try:
+                element = self._driver.find_element(*locator)
+            except Exception:
+                i += 1
+            else:
+                return element
 
     def find_elements(self, locator):
-        return self._driver.find_elements(*locator)
+        i = 0
+        while i <= SeleniumActions.DEFAULT_TIMEOUT:
+            try:
+                elements = self._driver.find_elements(*locator)
+            except Exception as e:
+                i += 1
+            else:
+                return elements
 
     def wait_for_element_clickable(self, locator):
         return WebDriverWait(self._driver, timeout=SeleniumActions.DEFAULT_TIMEOUT).until(
