@@ -8,7 +8,6 @@ class ModivoLocators:
     woman_clothing_btn: By = (By.XPATH, '//section/ul/li[@class=\'item\'][1]')
     brand_new_clothing_header_btn: By = (By.XPATH, '//div//li[contains(@class, \'navigation-item _level-1\')][1]')
     clothes_tab_pane: By = (By.XPATH, '//div//li[contains(@class, \'item _level-1 is-active-level\')][1]')
-
     size_filter_main_button: By = (By.XPATH,
                                    '//div[(@class=\'filter-desktop-wrapper filter nestedmultiselect size\')]//span[contains(@class, \'filter-label filter-wrapper-label\')]')
     upper_dressing_filter_button: By = (By.XPATH, '//div[contains(@class, \'category-box category-item\')][2]')
@@ -31,5 +30,9 @@ class ModivoLocators:
         return (By.XPATH, f'//tr//div[contains(text(), {size})]')
 
     @classmethod
-    def return_clothing_type_locator(cls, enum):
+    def choose_main_clothing_type(cls, type):
+        return (By.XPATH, f'//li[@class=\'item _level-1 is-active-level\'][{type}]/a')
+
+    @classmethod
+    def return_upper_clothing_type_locator(cls, enum):
         return (By.XPATH, f'//div//li[contains(@class, \'item _level-2 is-active-level\')][{enum}]')

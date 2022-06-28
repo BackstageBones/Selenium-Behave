@@ -19,8 +19,15 @@ class ModivoOnlineShoppingPage(BasePage):
     def select_womans_clothing(self):
         self._actions.click_element(ModivoLocators.woman_clothing_btn)
 
-    def select_clothe_type(self, type):
-        self._actions.wait_for_element_to_be_displayed(ModivoLocators.return_clothing_type_locator(type))
+    def select_main_type_of_clothing(self, type):
+        element = self._actions.find_element(ModivoLocators.choose_main_clothing_type(type))
+        element.click()
+
+    def select_upper_clothe_type(self, type):
+        if self._actions.is_element_displayed(ModivoLocators.popup_close_button):
+            self._actions.click_element(ModivoLocators.popup_close_button)
+        self._actions.wait_for_element_to_be_displayed(ModivoLocators.return_upper_clothing_type_locator(type))
+        self._actions.click_element(ModivoLocators.return_upper_clothing_type_locator(type))
 
     def choose_new_products_from_heading(self):
         self._actions.click_element(ModivoLocators.brand_new_clothing_header_btn)
@@ -48,8 +55,6 @@ class ModivoOnlineShoppingPage(BasePage):
         self._actions.click_element(ModivoLocators.choose_size_button)
 
     def select_random_cloth_cc_from_list(self):
-        if self._actions.is_element_displayed(ModivoLocators.popup_close_button):
-            self._actions.click_element(ModivoLocators.popup_close_button)
         available_clothes = self._actions.find_elements(ModivoLocators.clothes_cc_cards)
         random_cc = random.choice(available_clothes)
         random_cc.click()

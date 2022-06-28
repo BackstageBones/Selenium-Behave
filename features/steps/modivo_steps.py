@@ -1,7 +1,7 @@
 from behave import *
 
 from pages.modivo_online_shopping_page import ModivoOnlineShoppingPage
-from utils.modivo_enums import ClothingTypeEnum
+from utils.modivo_enums import UpperClothingTypeEnum, ClothingType
 use_step_matcher("parse")
 
 
@@ -56,7 +56,10 @@ def step_impl(context):
     modivo.go_to_basket_from_cc()
 
 
-@step("User choose {string} type of clothing")
-def step_impl(context, string):
+@step("User chooses {cloth_type} type of clothing with selection for {cloth_selection}")
+def step_impl(context, cloth_type, cloth_selection):
     modivo = ModivoOnlineShoppingPage(context.driver)
-    modivo.select_clothe_type(ClothingTypeEnum[string])
+    if cloth_type in ClothingType.Types.keys():
+        modivo.select_main_type_of_clothing(ClothingType.Types[cloth_type])
+    clothing = UpperClothingTypeEnum.__members__[cloth_selection]
+    modivo.select_upper_clothe_type(clothing.value)
