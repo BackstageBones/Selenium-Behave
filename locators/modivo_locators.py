@@ -13,8 +13,8 @@ class ModivoLocators:
     upper_dressing_filter_button: By = (By.XPATH, '//div[contains(@class, \'category-box category-item\')][2]')
     choose_size_button: By = (By.XPATH, '//button[@class=\'apply-btn base-button secondary normal\']')
     choose_size_button_label: By = (By.XPATH, '//button[@class=\'apply-btn base-button secondary normal\']/span')
-    clothes_cc_cards: By = (By.CLASS_NAME, 'offer-box product-card wishlist-button-on-hover show-extend-info')
-    add_to_cart_button_from_cc: By = (By.CLASS_NAME, 'add-to-cart base-button primary normal')
+    clothes_cc_cards: By = (By.XPATH, '//li[@class=\'product\']')
+    add_to_cart_button_from_cc: By = (By.XPATH, '//button[@class=\'add-to-cart base-button primary normal\']')
     show_basket_from_cc_button: By = (By.CLASS_NAME, 'action-button go-to-cart-button base-button primary small')
     proceed_to_checkout_button: By = (By.CLASS_NAME, 'proceed-to-checkout base-button primary normal')
     marketing_approvals_modal: By = (By.ID, 'marketing-approvals')
@@ -27,7 +27,7 @@ class ModivoLocators:
 
     @classmethod
     def return_cart_size_locator(cls, size):
-        return (By.XPATH, f'//tr//div[contains(text(), {size})]')
+        return (By.XPATH, f"/tr//div[contains(text(), '{size}')]")
 
     @classmethod
     def choose_main_clothing_type(cls, type):
