@@ -13,13 +13,27 @@ class ModivoLocators:
     upper_dressing_filter_button: By = (By.XPATH, '//div[contains(@class, \'category-box category-item\')][2]')
     choose_size_button: By = (By.XPATH, '//button[@class=\'apply-btn base-button secondary normal\']')
     choose_size_button_label: By = (By.XPATH, '//button[@class=\'apply-btn base-button secondary normal\']/span')
+    choose_size_sidebar: By = (By.XPATH, '//div[@class=\'side-modal opened right  is-not-full-screen-on-mobile\']')
     clothes_cc_cards: By = (By.XPATH, '//li[@class=\'product\']')
     add_to_cart_button_from_cc: By = (By.XPATH, '//button[@class=\'add-to-cart base-button primary normal\']')
-    show_basket_from_cc_button: By = (By.CLASS_NAME, 'action-button go-to-cart-button base-button primary small')
-    proceed_to_checkout_button: By = (By.CLASS_NAME, 'proceed-to-checkout base-button primary normal')
+    show_basket_from_cc_button: By = (By.XPATH, '//button[@data-test-id=\'added-to-cart-go-to-cart-button\']')
+    proceed_to_checkout_button: By = (By.XPATH, '//button[@data-test-id=\'cart-proceed-to-checkout\']')
+    continue_as_a_guest_button: By = (By.XPATH, '//button[@data-test-id=\'continue-as-guest\']')
     marketing_approvals_modal: By = (By.ID, 'marketing-approvals')
     accept_marketing_approvals_btn: By = (By.XPATH, '//*[@id="marketing-approvals"]/div/footer/button[2]')
     popup_close_button: By = (By.XPATH, '//button[@class=\'button-icon close\']')
+
+    # Guest details form
+    email_address: By = (By.ID, 'billing__email')
+    telephone_number: By = (By.ID, 'billing__telephone')
+    client_name: By = (By.ID, 'billing__firstname')
+    client_last_name: By = (By.ID, 'billing__lastname')
+    street_address: By = (By.ID, 'billing__street-0')
+    house_number: By = (By.ID, 'billing__street-1')
+    poste_code: By = (By.ID, 'billing__postcode')
+    city_address: By = (By.ID, 'billing__city')
+    dhl_parcel_input: By = (By.ID, 'modivo_store_custom02')
+    card_payment_input: By = (By.ID, 'payu_gateway_card')
 
     @classmethod
     def return_size_locator(cls, size_1, size_2):
@@ -27,7 +41,7 @@ class ModivoLocators:
 
     @classmethod
     def return_cart_size_locator(cls, size):
-        return (By.XPATH, f"/tr//div[contains(text(), '{size}')]")
+        return (By.XPATH, f"//tr[@data-test-value='{size}']")
 
     @classmethod
     def choose_main_clothing_type(cls, type):

@@ -2,6 +2,7 @@ from behave import *
 
 from pages.modivo_online_shopping_page import ModivoOnlineShoppingPage
 from utils.modivo_enums import UpperClothingTypeEnum, ClothingType
+
 use_step_matcher("parse")
 
 
@@ -40,14 +41,14 @@ def step_impl(context, clothing_type, size):
 
     else:
         raise NotImplementedError('Shoes and underwear filters are not currently handled')
-    context.size = size.split()[1]
+    context.size = size.split()
 
 
 @step("User adds a cloth to cart")
 def step_impl(context):
     modivo = ModivoOnlineShoppingPage(context.driver)
     modivo.select_random_cloth_cc_from_list()
-    modivo.add_to_cart_from_cloth_cc(context.size)
+    modivo.add_to_cart_from_cloth_cc(context.size[0])
 
 
 @step("User proceeds to checkout page")
