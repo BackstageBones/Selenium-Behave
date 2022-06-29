@@ -3,7 +3,7 @@ import time
 
 from assertpy import assert_that
 from selenium.common import ElementClickInterceptedException, TimeoutException
-
+from utils.UsersData import
 from locators.modivo_locators import ModivoLocators
 from pages.BasePage import BasePage
 
@@ -68,6 +68,10 @@ class ModivoOnlineShoppingPage(BasePage):
     def wait_for_sidebar_expanded(self):
         self._actions.wait_for_element_to_be_displayed(ModivoLocators.choose_size_sidebar)
 
+    def retrieve_price_tag_from_cc(self):
+        self._actions.wait_for_element_to_be_displayed(ModivoLocators.add_to_cart_button_from_cc)
+        return float(self._actions.find_element(ModivoLocators.item_price_tag).text[:6])
+
     def add_to_cart_from_cloth_cc(self, size):
         self._actions.wait_for_element_to_be_displayed(ModivoLocators.add_to_cart_button_from_cc)
         self._actions.click_element(ModivoLocators.add_to_cart_button_from_cc)
@@ -86,3 +90,23 @@ class ModivoOnlineShoppingPage(BasePage):
 
     def select_continue_as_a_guest(self):
         self._actions.click_element(ModivoLocators.continue_as_a_guest_button)
+
+    def check_if_billing_fields_displayed(self):
+        if self._actions.is_element_displayed(ModivoLocators.email_address):
+            if self._actions.is_element_displayed(ModivoLocators.telephone_number):
+                if self._actions.is_element_displayed(ModivoLocators.client_name):
+                    if self._actions.is_element_displayed(ModivoLocators.client_last_name):
+                        return True
+        return False
+
+    def fill_billing_details(self, account):
+        self._actions.send_keys(ModivoLocators.email_address, account.Email)
+        self._actions.send_keys(ModivoLocators.telephone_number, account.Phone_number)
+        self._actions.send_keys(ModivoLocators.client_name,  account.First_name)
+        self._actions.send_keys(ModivoLocators.client_last_name, account.Last_name)
+        self._actions.send_keys(ModivoLocators.street_address, account.Street_address)
+        self._actions.send_keys(ModivoLocators.house_number, account.House_number)
+        self._actions.send_keys(ModivoLocators.post_code, account.post_code)
+        self._actions.send_keys(ModivoLocators.city_address, account.city)
+
+

@@ -1,3 +1,4 @@
+from assertpy import assert_that
 from behave import *
 
 from pages.modivo_online_shopping_page import ModivoOnlineShoppingPage
@@ -48,6 +49,7 @@ def step_impl(context, clothing_type, size):
 def step_impl(context):
     modivo = ModivoOnlineShoppingPage(context.driver)
     modivo.select_random_cloth_cc_from_list()
+    context.item_price = modivo.retrieve_price_tag_from_cc()
     modivo.add_to_cart_from_cloth_cc(context.size[0])
 
 
@@ -64,3 +66,17 @@ def step_impl(context, cloth_type, cloth_selection):
         modivo.select_main_type_of_clothing(ClothingType.Types[cloth_type])
     clothing = UpperClothingTypeEnum.__members__[cloth_selection]
     modivo.select_upper_clothe_type(clothing.value)
+
+
+@step("User decides to continue checkout as a guest")
+def step_impl(context):
+    modivo = ModivoOnlineShoppingPage(context.driver)
+    modivo.select_continue_as_a_guest()
+
+
+@step("User fills billing data as {account}")
+def step_impl(context, account):
+    modivo = ModivoOnlineShoppingPage(context.driver)
+    assertion_message = 'Billing detail fields for a guest user should be displayed, but are not.'
+    assert_that(modivo.check_if_billing_fields_displayed(), assertion_message).is_true()
+    modivo.fill_billing_details(account)

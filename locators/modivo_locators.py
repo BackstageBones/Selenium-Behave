@@ -22,6 +22,8 @@ class ModivoLocators:
     marketing_approvals_modal: By = (By.ID, 'marketing-approvals')
     accept_marketing_approvals_btn: By = (By.XPATH, '//*[@id="marketing-approvals"]/div/footer/button[2]')
     popup_close_button: By = (By.XPATH, '//button[@class=\'button-icon close\']')
+    item_price_tag: By = (
+        By.XPATH, '//div[@class=\'product-price price big display-inline without-rating\']//div[@class=\'price\']')
 
     # Guest details form
     email_address: By = (By.ID, 'billing__email')
@@ -30,7 +32,7 @@ class ModivoLocators:
     client_last_name: By = (By.ID, 'billing__lastname')
     street_address: By = (By.ID, 'billing__street-0')
     house_number: By = (By.ID, 'billing__street-1')
-    poste_code: By = (By.ID, 'billing__postcode')
+    post_code: By = (By.ID, 'billing__postcode')
     city_address: By = (By.ID, 'billing__city')
     dhl_parcel_input: By = (By.ID, 'modivo_store_custom02')
     card_payment_input: By = (By.ID, 'payu_gateway_card')

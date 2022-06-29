@@ -10,3 +10,5 @@ Feature: As a User I would like to create an order
     When User chooses Size filter for Top garmets with detailed size M 38
     And User adds a cloth to cart
     And User proceeds to checkout page
+    And User decides to continue checkout as a guest
+    And User fills billing data as JOHN_TEST
