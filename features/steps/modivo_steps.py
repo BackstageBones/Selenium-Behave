@@ -2,7 +2,8 @@ from assertpy import assert_that
 from behave import *
 
 from pages.modivo_online_shopping_page import ModivoOnlineShoppingPage
-from utils.modivo_enums import UpperClothingTypeEnum, ClothingType
+from utils.UsersData import USERS
+from utils.modivo_enums import UpperClothingTypeEnum, ClothingType, Cards
 
 use_step_matcher("parse")
 
@@ -77,6 +78,43 @@ def step_impl(context):
 @step("User fills billing data as {account}")
 def step_impl(context, account):
     modivo = ModivoOnlineShoppingPage(context.driver)
+    formatted_account = account.split().strip()
     assertion_message = 'Billing detail fields for a guest user should be displayed, but are not.'
     assert_that(modivo.check_if_billing_fields_displayed(), assertion_message).is_true()
-    modivo.fill_billing_details(account)
+    for user in USERS:
+        if formatted_account[0] == user.First_name and formatted_account[1] == user.Last_name:
+            modivo.fill_billing_details(user)
+        else:
+            raise NameError
+
+
+@step("User chooses DHL shipment for his order")
+def step_impl(context):
+    modivo = ModivoOnlineShoppingPage(context.driver)
+    modivo.select_dhl_shipment()
+
+
+@step("User fills card payment form with invalid Visa card")
+def step_impl(context):
+    modivo = ModivoOnlineShoppingPage(context.driver)
+    modivo.fill_card_form(Cards.VISA_UNAUTHENTICATED)
+
+
+@step("User decides to finish his order with pay button")
+def step_impl(context):
+    modivo = ModivoOnlineShoppingPage(context.driver)
+    modivo.click_order_button()
+
+
+@then("User will see unfilled required terms error")
+def step_impl(context):
+    modivo = ModivoOnlineShoppingPage(context.driver)
+    assertion_message = 'Only one validation error should be visible, but is not.'
+    assert_that(modivo.check_for_validation_messages_under_required_fields(), assertion_message).is_equal_to(1)
+
+
+@step("User Price on the checkout page matches price from basket")
+def step_impl(context):
+    modivo = ModivoOnlineShoppingPage(context.driver)
+    assertion_message = 'Price tag on checkout page doesn\'t match the one from basket, but should.'
+    assert_that(modivo.retrieve_price_form_checkout_page, assertion_message).is_equal_to(context.item_price)

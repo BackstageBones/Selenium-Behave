@@ -11,4 +11,9 @@ Feature: As a User I would like to create an order
     And User adds a cloth to cart
     And User proceeds to checkout page
     And User decides to continue checkout as a guest
-    And User fills billing data as JOHN_TEST
+    And User fills billing data as John Test
+    And User chooses DHL shipment for his order
+    And User fills card payment form with invalid Visa card
+    And User decides to finish his order with pay button
+    Then User will see unfilled required terms error
+    And User Price on the checkout page matches price from basket

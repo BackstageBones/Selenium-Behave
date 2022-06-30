@@ -35,15 +35,27 @@ class ModivoLocators:
     post_code: By = (By.ID, 'billing__postcode')
     city_address: By = (By.ID, 'billing__city')
     dhl_parcel_input: By = (By.ID, 'modivo_store_custom02')
-    card_payment_input: By = (By.ID, 'payu_gateway_card')
 
+    # Card payments
+    card_payment_input: By = (By.ID, 'payu_gateway_card')
+    card_number_input: By = (By.ID, 'card-number')
+    card_date_input: By = (By.ID, 'payu-card-date')
+    card_cvv_input: By = (By.XPATH, '//input[@placeholder=\'CVV\']')
+    required_terms_input: By = (By.ID, 'terms')
+
+    # Product Card
+    checkout_price_tag: By = (By.XPATH, '//div[@class=\'cart-items-list internal-only\']//div[@class=\'price\']')
+    finalise_order_button: By = (By.XPATH, '//button[@data-test-id=\'agreements-button\']')
+    error_messages_on_required_fields: By = (By.XPATH, '//span[@class=\'error-msg\']')
+    check:By = (By.TAG_NAME ,'iframe')
     @classmethod
     def return_size_locator(cls, size_1, size_2):
         return (By.ID, f'checkbox-damskie_gorne_czesci_garderoby:{size_1}:{size_2}')
 
     @classmethod
     def return_cart_size_locator(cls, size):
-        return (By.XPATH, f"//tr[@data-test-value='{size}']")
+        print((By.XPATH, f"//tr[@data-test-id='product-size' and  @data-test-value='{size}']"))
+        return (By.XPATH, f"//tr[@data-test-id='product-size' and  @data-test-value='{size}']")
 
     @classmethod
     def choose_main_clothing_type(cls, type):

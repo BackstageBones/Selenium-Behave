@@ -2,8 +2,9 @@ import random
 import time
 
 from assertpy import assert_that
-from selenium.common import ElementClickInterceptedException, TimeoutException
-from utils.UsersData import
+from selenium.common import ElementClickInterceptedException
+from selenium.webdriver.common.by import By
+
 from locators.modivo_locators import ModivoLocators
 from pages.BasePage import BasePage
 
@@ -63,6 +64,8 @@ class ModivoOnlineShoppingPage(BasePage):
     def select_random_cloth_cc_from_list(self):
         available_clothes = self._actions.find_elements(ModivoLocators.clothes_cc_cards)
         random_cc = random.choice(available_clothes)
+        self._actions.scroll_to_element(random_cc)
+        time.sleep(0.5)
         random_cc.click()
 
     def wait_for_sidebar_expanded(self):
@@ -70,15 +73,18 @@ class ModivoOnlineShoppingPage(BasePage):
 
     def retrieve_price_tag_from_cc(self):
         self._actions.wait_for_element_to_be_displayed(ModivoLocators.add_to_cart_button_from_cc)
-        return float(self._actions.find_element(ModivoLocators.item_price_tag).text[:6])
+        return float(self._actions.find_element(ModivoLocators.item_price_tag).text[:6].replace(',', '.'))
 
     def add_to_cart_from_cloth_cc(self, size):
         self._actions.wait_for_element_to_be_displayed(ModivoLocators.add_to_cart_button_from_cc)
         self._actions.click_element(ModivoLocators.add_to_cart_button_from_cc)
         self.wait_for_sidebar_expanded()
+        iframe = self._actions.find_elements(ModivoLocators.check)[1]
+        self._actions.switch_to_iframe(iframe)
         element = self._actions.find_element(ModivoLocators.return_cart_size_locator(size))
         assert_that('disabled', f'Desired {size} is not available').is_not_in(element.get_attribute("class"))
         self._actions.click_element(ModivoLocators.return_cart_size_locator(size))
+        self._actions.switch_to_default_window()
 
     def go_to_basket_from_cc(self):
         assert_that(self._actions.is_element_displayed(ModivoLocators.show_basket_from_cc_button),
@@ -102,11 +108,28 @@ class ModivoOnlineShoppingPage(BasePage):
     def fill_billing_details(self, account):
         self._actions.send_keys(ModivoLocators.email_address, account.Email)
         self._actions.send_keys(ModivoLocators.telephone_number, account.Phone_number)
-        self._actions.send_keys(ModivoLocators.client_name,  account.First_name)
+        self._actions.send_keys(ModivoLocators.client_name, account.First_name)
         self._actions.send_keys(ModivoLocators.client_last_name, account.Last_name)
         self._actions.send_keys(ModivoLocators.street_address, account.Street_address)
         self._actions.send_keys(ModivoLocators.house_number, account.House_number)
         self._actions.send_keys(ModivoLocators.post_code, account.post_code)
         self._actions.send_keys(ModivoLocators.city_address, account.city)
 
+    def select_dhl_shipment(self):
+        self._actions.click_element(ModivoLocators.dhl_parcel_input)
 
+    def fill_card_form(self, card):
+        self._actions.click_element(ModivoLocators.card_payment_input)
+        self._actions.send_keys(ModivoLocators.card_number_input, card.value)
+        self._actions.send_keys(ModivoLocators.card_date_input, card.expire_date_gen())
+        self._actions.send_keys(ModivoLocators.card_cvv_input, card.security_code_gen())
+
+    def retrieve_price_form_checkout_page(self):
+        return float(self._actions.find_element(ModivoLocators.checkout_price_tag).text[:6].replace(',', '.'))
+
+    def click_order_button(self):
+        self._actions.click_element(ModivoLocators.finalise_order_button)
+
+    def check_for_validation_messages_under_required_fields(self):
+        errors = self._actions.find_elements(ModivoLocators.error_messages_on_required_fields)
+        return len(errors)

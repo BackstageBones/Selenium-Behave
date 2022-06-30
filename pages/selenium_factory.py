@@ -49,7 +49,7 @@ class DriverFactory:
 
 
 class SeleniumActions:
-    DEFAULT_TIMEOUT = 10
+    DEFAULT_TIMEOUT = 20
 
     def __init__(self, driver):
         self._driver = driver
@@ -115,3 +115,9 @@ class SeleniumActions:
     def scroll_to_element(self, element):
         action = ActionChains(self._driver)
         action.move_to_element(element).perform()
+
+    def switch_to_iframe(self, iframe):
+        self._driver.switch_to.frame(iframe)
+
+    def switch_to_default_window(self):
+        self._driver.switch_to.default_content()
