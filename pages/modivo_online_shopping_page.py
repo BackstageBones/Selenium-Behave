@@ -79,12 +79,13 @@ class ModivoOnlineShoppingPage(BasePage):
         self._actions.wait_for_element_to_be_displayed(ModivoLocators.add_to_cart_button_from_cc)
         self._actions.click_element(ModivoLocators.add_to_cart_button_from_cc)
         self.wait_for_sidebar_expanded()
-        iframe = self._actions.find_elements(ModivoLocators.check)[1]
-        self._actions.switch_to_iframe(iframe)
-        element = self._actions.find_element(ModivoLocators.return_cart_size_locator(size))
-        assert_that('disabled', f'Desired {size} is not available').is_not_in(element.get_attribute("class"))
-        self._actions.click_element(ModivoLocators.return_cart_size_locator(size))
-        self._actions.switch_to_default_window()
+        # iframe = self._actions.find_elements(ModivoLocators.check)[1]
+        # self._actions.switch_to_iframe(iframe)
+        # element = self._actions.find_element(ModivoLocators.return_cart_size_locator(size))
+        # assert_that('disabled', f'Desired {size} is not available').is_not_in(element.get_attribute("class"))
+        # self._actions.click_element(ModivoLocators.return_cart_size_locator(size))
+        # self._actions.switch_to_default_window()
+        time.sleep(20)
 
     def go_to_basket_from_cc(self):
         assert_that(self._actions.is_element_displayed(ModivoLocators.show_basket_from_cc_button),
@@ -116,7 +117,9 @@ class ModivoOnlineShoppingPage(BasePage):
         self._actions.send_keys(ModivoLocators.city_address, account.city)
 
     def select_dhl_shipment(self):
-        self._actions.click_element(ModivoLocators.dhl_parcel_input)
+        dhl_input = self._actions.find_element(ModivoLocators.dhl_parcel_input)
+        self._actions.scroll_to_element(dhl_input)
+        self._actions.click_by_javascript(ModivoLocators.dhl_parcel_input)
 
     def fill_card_form(self, card):
         self._actions.click_element(ModivoLocators.card_payment_input)

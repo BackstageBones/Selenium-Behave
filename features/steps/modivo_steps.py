@@ -78,12 +78,13 @@ def step_impl(context):
 @step("User fills billing data as {account}")
 def step_impl(context, account):
     modivo = ModivoOnlineShoppingPage(context.driver)
-    formatted_account = account.split().strip()
+    formatted_account = account.split()
     assertion_message = 'Billing detail fields for a guest user should be displayed, but are not.'
     assert_that(modivo.check_if_billing_fields_displayed(), assertion_message).is_true()
     for user in USERS:
-        if formatted_account[0] == user.First_name and formatted_account[1] == user.Last_name:
+        if formatted_account[0].strip() == user.First_name and formatted_account[1].strip() == user.Last_name:
             modivo.fill_billing_details(user)
+            break
         else:
             raise NameError
 
